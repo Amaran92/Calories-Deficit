@@ -1,0 +1,1435 @@
+<!DOCTYPE html>
+<!-- saved from url=(0131)file:///C:/Users/AMARAN~1/AppData/Local/Temp/MicrosoftEdgeDownloads/b34f1be2-57ce-4350-90b3-00d9601af199/calorie_dashboard%202.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="format-detection" content="telephone=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#10244A">
+<title>Daily Calorie Intake Dashboard</title>
+<style>
+:root{
+  --navy:#10244A; --navy-2:#1B3766; --gold:#C9A227; --grey:#F4F5F7;
+  --grey-2:#E3E6EB; --text:#2B2F36; --muted:#6B7280;
+  --red:#C0392B; --red-bg:#FDECEA; --green:#1E8449; --green-bg:#EAF7EF;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:rgba(16,36,74,.12)}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%;overflow-x:hidden}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Tahoma,Arial,sans-serif;
+  background:var(--grey);color:var(--text);font-size:14px;overflow-x:hidden;width:100%;
+  -webkit-font-smoothing:antialiased}
+header{background:var(--navy);color:#fff;padding:18px 28px;border-bottom:4px solid var(--gold);
+  padding-left:max(28px,env(safe-area-inset-left));padding-right:max(28px,env(safe-area-inset-right))}
+header h1{font-size:20px;font-weight:600;letter-spacing:.3px}
+header p{font-size:12px;color:#C3CBD9;margin-top:3px}
+.wrap{max-width:1180px;margin:0 auto;padding:22px 20px 60px;width:100%;
+  padding-left:max(20px,env(safe-area-inset-left));padding-right:max(20px,env(safe-area-inset-right));
+  padding-bottom:calc(60px + env(safe-area-inset-bottom))}
+.tabs{display:flex;gap:2px;border-bottom:2px solid var(--grey-2);margin-bottom:22px;flex-wrap:wrap}
+.tab{padding:11px 22px;background:#fff;border:1px solid var(--grey-2);border-bottom:none;cursor:pointer;
+  font-weight:600;color:var(--muted);border-radius:4px 4px 0 0;font-size:13px}
+.tab.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+.panel{display:none}
+.panel.active{display:block}
+.card{background:#fff;border:1px solid var(--grey-2);border-radius:6px;padding:20px 22px;margin-bottom:18px}
+.card h2{font-size:15px;color:var(--navy);font-weight:700;margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px}
+.card h2::after{content:"";display:block;width:44px;height:3px;background:var(--gold);margin-top:6px;margin-bottom:14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px}
+label{display:block;font-size:12px;font-weight:600;color:var(--muted);margin-bottom:5px;text-transform:uppercase;letter-spacing:.3px}
+input,select,button{-webkit-appearance:none;appearance:none;font-family:inherit}
+input,select{width:100%;padding:9px 10px;border:1px solid var(--grey-2);border-radius:4px;
+  font-size:14px;background:#fff;color:var(--text);min-height:42px;line-height:1.3}
+select{background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8'><path d='M1 1l5 5 5-5' fill='none' stroke='%236B7280' stroke-width='2'/></svg>");
+  background-repeat:no-repeat;background-position:right 12px center;padding-right:34px}
+input[type=date]{min-height:42px}
+input[type=number]{-moz-appearance:textfield}
+input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+input:focus,select:focus{outline:none;border-color:var(--navy)}
+button{background:var(--navy);color:#fff;border:none;padding:10px 20px;border-radius:4px;font-weight:600;
+  cursor:pointer;font-size:13px;font-family:inherit}
+button{cursor:pointer;touch-action:manipulation;min-height:44px}
+button:active{background:var(--navy-2);transform:scale(.98)}
+button.ghost:active{background:var(--grey)}
+@media (hover:hover){button:hover{background:var(--navy-2)}}
+button.gold{background:var(--gold);color:var(--navy)}
+button.ghost{background:#fff;color:var(--navy);border:1px solid var(--grey-2)}
+button.danger{background:var(--red)}
+.btnrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px}
+.stat{background:#fff;border:1px solid var(--grey-2);border-left:4px solid var(--gold);border-radius:5px;padding:14px 16px}
+.stat .k{font-size:11px;color:var(--muted);text-transform:uppercase;font-weight:600;letter-spacing:.4px}
+.stat .v{font-size:24px;font-weight:700;color:var(--navy);margin-top:5px}
+.stat .s{font-size:11px;color:var(--muted);margin-top:3px}
+.stat.over{border-left-color:var(--red)} .stat.over .v{color:var(--red)}
+.stat.under{border-left-color:var(--green)} .stat.under .v{color:var(--green)}
+table{width:100%;border-collapse:collapse;margin-top:6px;font-size:13px}
+th{background:var(--navy);color:#fff;text-align:left;padding:9px 10px;font-size:11px;text-transform:uppercase;letter-spacing:.4px;font-weight:600}
+td{padding:8px 10px;border-bottom:1px solid var(--grey-2)}
+tbody tr:nth-child(even){background:#FAFBFC}
+.over-row{background:var(--red-bg)!important;color:var(--red);font-weight:600}
+.under-row td:last-child{color:var(--green)}
+.pill{display:inline-block;padding:2px 9px;border-radius:10px;font-size:11px;font-weight:700}
+.pill.red{background:var(--red-bg);color:var(--red)} .pill.green{background:var(--green-bg);color:var(--green)}
+.bar{height:10px;background:var(--grey-2);border-radius:5px;overflow:hidden;min-width:70px}
+.bar span{display:block;height:100%;background:var(--green)}
+.bar span.red{background:var(--red)}
+.note{font-size:12px;color:var(--muted);margin-top:10px;line-height:1.6}
+.empty{padding:26px;text-align:center;color:var(--muted);font-size:13px}
+.banner{padding:11px 14px;border-radius:4px;font-size:13px;font-weight:600;margin-bottom:14px}
+.banner.ok{background:var(--green-bg);color:var(--green);border:1px solid #BCE3CB}
+.banner.warn{background:var(--red-bg);color:var(--red);border:1px solid #F2C3BD}
+.sub{font-size:12px;color:var(--muted);margin-bottom:12px}
+/* Custom autocomplete — iOS Safari does not render <datalist> reliably */
+.ac{position:relative}
+.suggest{position:absolute;top:calc(100% + 4px);left:0;right:0;z-index:50;background:#fff;
+  border:1px solid var(--grey-2);border-radius:6px;box-shadow:0 8px 24px rgba(16,36,74,.16);
+  max-height:290px;overflow-y:auto;-webkit-overflow-scrolling:touch;display:none}
+.suggest.on{display:block}
+.suggest div{padding:12px 13px;border-bottom:1px solid var(--grey-2);cursor:pointer;font-size:14px;
+  display:flex;justify-content:space-between;gap:10px;align-items:center;min-height:46px}
+.suggest div:last-child{border-bottom:none}
+.suggest div:active,.suggest div.sel{background:var(--grey)}
+.suggest .nm{font-weight:600;color:var(--navy)}
+.suggest .sv{display:block;font-size:11px;color:var(--muted);font-weight:400;margin-top:2px}
+.suggest .kc{font-weight:700;color:var(--gold);white-space:nowrap;font-size:13px}
+.lookup{margin-top:14px;padding:11px 14px;border-radius:4px;font-size:13px;background:var(--grey);
+  border:1px dashed var(--grey-2);color:var(--muted);line-height:1.6}
+.lookup.hit{background:var(--green-bg);border:1px solid #BCE3CB;color:var(--green);font-weight:600}
+.lookup.miss{background:#FFF8E6;border:1px solid #EBD9A0;color:#8A6D1F;font-weight:600}
+.lookup b{color:inherit}
+.cat{display:inline-block;padding:2px 9px;border-radius:10px;font-size:11px;font-weight:600;
+  background:var(--grey);color:var(--navy);border:1px solid var(--grey-2)}
+.inline{display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap}
+.inline > div{flex:1;min-width:150px}
+
+/* ---------- CHARTS ---------- */
+.chartbox{width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.chartbox svg{display:block;width:100%;height:auto;max-width:100%}
+.chart-legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:10px;font-size:12px;color:var(--muted)}
+.chart-legend i{display:inline-block;width:12px;height:12px;border-radius:2px;margin-right:6px;vertical-align:-1px}
+.cg-axis{stroke:var(--grey-2);stroke-width:1}
+.cg-grid{stroke:#EDEFF3;stroke-width:1}
+.cg-lim{stroke:var(--red);stroke-width:1.5;stroke-dasharray:5 4}
+.cg-lbl{font-size:10px;fill:var(--muted);font-family:'Segoe UI',Arial,sans-serif}
+.cg-val{font-size:10px;font-weight:700;font-family:'Segoe UI',Arial,sans-serif}
+.cg-line{fill:none;stroke:var(--navy);stroke-width:2.5;stroke-linejoin:round;stroke-linecap:round}
+.cg-area{fill:rgba(16,36,74,.10)}
+.charts-2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+
+/* ---------- RESPONSIVE / MOBILE ---------- */
+.tscroll{width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tscroll table{min-width:600px}
+@media (max-width:900px){
+  .charts-2{grid-template-columns:1fr}
+}
+@media (max-width:680px){
+  body{font-size:15px}
+  header{padding:14px 16px;position:-webkit-sticky;position:sticky;top:0;z-index:20;
+    padding-top:calc(14px + env(safe-area-inset-top))}
+  header h1{font-size:17px}
+  header p{font-size:11px}
+  .wrap{padding:14px 12px 48px;
+    padding-left:max(12px,env(safe-area-inset-left));padding-right:max(12px,env(safe-area-inset-right));
+    padding-bottom:calc(48px + env(safe-area-inset-bottom))}
+  .tabs{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;gap:6px;
+    border-bottom:none;padding-bottom:8px;scrollbar-width:none}
+  .tabs::-webkit-scrollbar{display:none}
+  .tab{flex:0 0 auto;padding:10px 16px;border-radius:20px;border:1px solid var(--grey-2);font-size:12.5px;white-space:nowrap}
+  .card{padding:16px 14px;border-radius:8px;margin-bottom:14px}
+  .card h2{font-size:14px}
+  .grid{grid-template-columns:1fr;gap:12px}
+  .stats{grid-template-columns:1fr 1fr;gap:10px}
+  .stat{padding:12px 12px;border-radius:6px}
+  .stat .v{font-size:20px}
+  .stat .k{font-size:10px}
+  input,select{padding:12px 10px;font-size:16px}  /* 16px stops iOS zoom-on-focus */
+  button{padding:13px 18px;width:100%;font-size:15px;min-height:48px}
+  .btnrow{gap:8px}
+  .btnrow button{width:100%}
+  table{font-size:12.5px}
+  th{padding:8px 8px;font-size:10px}
+  td{padding:9px 8px}
+  .tscroll table{min-width:520px}
+  .inline{flex-direction:column;align-items:stretch}
+  .inline > div{width:100%}
+  .suggest{max-height:240px}
+  /* SVG text scales with viewBox — enlarge so labels stay readable on a phone */
+  .cg-lbl{font-size:15px}
+  .cg-val{font-size:15px}
+  .chart-legend{font-size:11.5px;gap:12px}
+}
+@media (max-width:380px){
+  .stats{grid-template-columns:1fr}
+}
+@media print{.tabs,.btnrow,button{display:none}.panel{display:block!important}.tscroll{overflow:visible}}
+</style>
+</head>
+<body>
+<header>
+  <h1>Daily Calorie Intake Dashboard</h1>
+  <p id="hdrSub">Amaranath — Daily limit 1,500 kcal</p>
+</header>
+
+<div class="wrap">
+  <div class="tabs">
+    <div class="tab active" data-p="p1">1. Personal Information</div>
+    <div class="tab" data-p="p2">2. Daily Log</div>
+    <div class="tab" data-p="p3">3. Weekly Summary</div>
+    <div class="tab" data-p="p4">4. Monthly Summary</div>
+    <div class="tab" data-p="p5">5. Food Library</div>
+  </div>
+
+  <!-- TAB 1 -->
+  <div class="panel active" id="p1">
+    <div class="card">
+      <h2>Personal Profile</h2>
+      <div class="grid">
+        <div><label>Full Name</label><input id="pName" placeholder="Your name"></div>
+        <div><label>Gender</label><select id="pGender"><option value="male">Male</option><option value="female">Female</option></select></div>
+        <div><label>Age (years)</label><input id="pAge" type="number" min="10" max="100" value="30"></div>
+        <div><label>Height (cm)</label><input id="pHeight" type="number" min="100" max="250" value="170"></div>
+        <div><label>Weight (kg)</label><input id="pWeight" type="number" min="25" max="250" step="0.1" value="70"></div>
+        <div><label>Activity Level</label>
+          <select id="pAct">
+            <option value="1.2">Sedentary — little/no exercise</option>
+            <option value="1.375" selected="">Lightly active — 1–3 days/week</option>
+            <option value="1.55">Moderately active — 3–5 days/week</option>
+            <option value="1.725">Very active — 6–7 days/week</option>
+            <option value="1.9">Extra active — physical job / 2x training</option>
+          </select>
+        </div>
+        <div><label>Goal</label>
+          <select id="pGoal">
+            <option value="-500">Lose weight (−500 kcal)</option>
+            <option value="-250">Mild loss (−250 kcal)</option>
+            <option value="0" selected="">Maintain weight</option>
+            <option value="250">Mild gain (+250 kcal)</option>
+            <option value="500">Gain weight (+500 kcal)</option>
+          </select>
+        </div>
+        <div><label>Manual Daily Limit (optional)</label><input id="pManual" type="number" min="800" placeholder="Leave blank to auto-calculate"></div>
+      </div>
+      <div class="btnrow">
+        <button onclick="saveProfile()">Save &amp; Calculate</button>
+        <button class="ghost" onclick="resetAll()">Reset All Data</button>
+      </div>
+      <p class="note">BMR is calculated using the <strong>Mifflin–St Jeor</strong> equation (gender-specific), then multiplied by the activity factor to obtain TDEE. Your goal adjustment is applied to set the daily calorie limit.</p>
+    </div>
+
+    <div class="card">
+      <h2>Calculated Targets</h2>
+      <div class="stats">
+        <div class="stat"><div class="k">BMI</div><div class="v" id="oBmi">26.8</div><div class="s" id="oBmiCat">Overweight</div></div>
+        <div class="stat"><div class="k">BMR</div><div class="v" id="oBmr">1,862</div><div class="s">kcal/day at rest</div></div>
+        <div class="stat"><div class="k">TDEE (Maintenance)</div><div class="v" id="oTdee">2,885</div><div class="s">kcal/day with activity</div></div>
+        <div class="stat"><div class="k">Daily Calorie Limit</div><div class="v" id="oLimit">1,500</div><div class="s">target used across dashboard</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB 2 -->
+  <div class="panel" id="p2">
+    <div class="card">
+      <h2>Add Food / Meal Entry</h2>
+      <p class="sub">Daily limit in use: <strong id="limShow">1,500 kcal</strong></p>
+      <div class="grid">
+        <div><label>Date</label><input id="eDate" type="date"></div>
+        <div><label>Meal</label><select id="eMeal">
+          <option>Breakfast</option><option>Lunch</option><option>Dinner</option><option>Snack</option><option>Beverage</option></select></div>
+        <div class="ac"><label>Food Item <span style="color:var(--gold)">(auto-lookup)</span></label>
+          <input id="eItem" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" enterkeyhint="done" placeholder="Start typing e.g. Nasi lemak">
+          <div class="suggest" id="suggest"></div></div>
+        <div><label>Portion</label><select id="ePortion">
+          <option value="0.25">¼ serving</option><option value="0.5">½ serving</option>
+          <option value="0.75">¾ serving</option><option value="1" selected="">1 serving</option>
+          <option value="1.5">1½ servings</option><option value="2">2 servings</option>
+          <option value="2.5">2½ servings</option><option value="3">3 servings</option></select></div>
+        <div><label>Calories (kcal)</label><input id="eCal" type="number" min="0" placeholder="0"></div>
+      </div>
+      <div id="lookupBox" class="lookup">Type a food name — calories fill in automatically from the food library.</div>
+      <div class="btnrow">
+        <button class="gold" onclick="addEntry()">Add Entry</button>
+        <button class="ghost" onclick="gotoLibrary()">Browse Food Library</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Today / Selected Date</h2>
+      <div id="dayBanner"><div class="banner ok">✓ Within limit — 1,155 kcal remaining on 23 Sept 2026.</div></div>
+      <div class="stats">
+        <div class="stat under" id="sConsumed"><div class="k">Consumed</div><div class="v" id="oCons">345</div><div class="s">kcal</div></div>
+        <div class="stat"><div class="k">Daily Limit</div><div class="v" id="oLim2">1,500</div><div class="s">kcal</div></div>
+        <div class="stat under" id="sRemain"><div class="k">Remaining</div><div class="v" id="oRem">1,155</div><div class="s">kcal</div></div>
+        <div class="stat"><div class="k">% of Limit</div><div class="v" id="oPct">23%</div><div class="s">utilisation</div></div>
+      </div>
+      <div class="tscroll"><table><thead><tr><th>Meal</th><th>Food Item</th><th>Portion</th><th style="text-align:right">Calories</th><th style="width:70px">Action</th></tr></thead>
+      <tbody id="dayRows"><tr><td>Breakfast</td><td>Banana and Dragon Fruit Smoothie</td>
+     <td style="font-size:12px;color:var(--muted)">1 × 345</td>
+     <td style="text-align:right">345</td>
+     <td><button class="danger" style="padding:3px 9px;font-size:11px" onclick="delEntry(1790123364886)">Del</button></td></tr><tr style="font-weight:700;">
+      <td colspan="3">TOTAL</td><td style="text-align:right">345</td><td></td></tr></tbody></table></div>
+    </div>
+
+    <div class="card">
+      <h2>All Daily Totals</h2>
+      <div class="tscroll"><table><thead><tr><th>Date</th><th>Day</th><th>Entries</th><th style="text-align:right">Total kcal</th><th style="text-align:right">Limit</th><th style="text-align:right">Variance</th><th>Status</th></tr></thead>
+      <tbody id="allRows"><tr class=""><td>23 Sept 2026</td><td>Wed</td><td>1</td>
+      <td style="text-align:right">345</td><td style="text-align:right">1,500</td>
+      <td style="text-align:right">-1,155</td><td><span class="pill green">Within</span></td></tr></tbody></table></div>
+      <div class="btnrow"><button class="ghost" onclick="exportCSV()">Export CSV</button></div>
+    </div>
+  </div>
+
+  <!-- TAB 3 -->
+  <div class="panel" id="p3">
+    <div class="card">
+      <h2>Weekly Averages</h2>
+      <p class="sub">Weeks run Monday–Sunday. Average is calculated over days with logged entries.</p>
+      <div class="stats" id="wkStats">
+      <div class="stat under"><div class="k">Latest Week Average</div><div class="v">345</div><div class="s">kcal/day</div></div>
+      <div class="stat"><div class="k">Days Logged</div><div class="v">1</div><div class="s">this week</div></div>
+      <div class="stat under"><div class="k">Days Over Limit</div><div class="v">0</div><div class="s">of 1 days</div></div>
+      <div class="stat under"><div class="k">Overall Average</div><div class="v">345</div><div class="s">all logged days</div></div></div>
+      <div class="tscroll"><table style="margin-top:16px"><thead><tr><th>Week</th><th>Period</th><th>Days Logged</th><th style="text-align:right">Total kcal</th><th style="text-align:right">Daily Average</th><th style="text-align:right">Limit</th><th>Days Over</th><th style="width:130px">Avg vs Limit</th><th>Status</th></tr></thead>
+      <tbody id="wkRows"><tr class=""><td>W1</td>
+      <td>20 Sept 2026 – 25 Sept 2026</td><td>1</td>
+      <td style="text-align:right">345</td><td style="text-align:right"><strong>345</strong></td>
+      <td style="text-align:right">1,500</td><td>0 / 1</td>
+      <td><div class="bar"><span class="" style="width:23%"></span></div></td><td><span class="pill green">Within</span></td></tr></tbody></table></div>
+    </div>
+
+    <div class="card">
+      <h2>Weekly Trend — Daily Intake (Latest Week)</h2>
+      <p class="sub">Daily calories across Monday–Sunday of the most recent logged week, against your daily limit.</p>
+      <div class="chartbox" id="chartDaily"><svg viewBox="0 0 640 270" preserveAspectRatio="xMidYMid meet"><line class="cg-grid" x1="52" y1="228" x2="624" y2="228"></line>
+        <text class="cg-lbl" x="44" y="231" text-anchor="end">0</text><line class="cg-grid" x1="52" y1="176.5" x2="624" y2="176.5"></line>
+        <text class="cg-lbl" x="44" y="179.5" text-anchor="end">500</text><line class="cg-grid" x1="52" y1="125" x2="624" y2="125"></line>
+        <text class="cg-lbl" x="44" y="128" text-anchor="end">1000</text><line class="cg-grid" x1="52" y1="73.5" x2="624" y2="73.5"></line>
+        <text class="cg-lbl" x="44" y="76.5" text-anchor="end">1500</text><line class="cg-grid" x1="52" y1="22" x2="624" y2="22"></line>
+        <text class="cg-lbl" x="44" y="25" text-anchor="end">2000</text><rect x="69.97714285714285" y="224" width="45.76" height="4" rx="2" fill="#E3E6EB"></rect><text class="cg-lbl" x="92.85714285714285" y="245" text-anchor="middle">Sun</text><rect x="151.6914285714286" y="224" width="45.76" height="4" rx="2" fill="#E3E6EB"></rect><text class="cg-lbl" x="174.57142857142858" y="245" text-anchor="middle">Mon</text><rect x="233.40571428571428" y="224" width="45.76" height="4" rx="2" fill="#E3E6EB"></rect><text class="cg-lbl" x="256.2857142857143" y="245" text-anchor="middle">Tue</text><rect x="315.11999999999995" y="224" width="45.76" height="4" rx="2" fill="#E3E6EB"></rect><text class="cg-lbl" x="337.99999999999994" y="245" text-anchor="middle">Wed</text><rect x="396.83428571428567" y="192.465" width="45.76" height="35.535" rx="3" fill="#10244A" opacity=".92"><title>Thu: 345 kcal</title></rect>
+      <text class="cg-val" x="419.71428571428567" y="186.465" text-anchor="middle" fill="#10244A">345</text><text class="cg-lbl" x="419.71428571428567" y="245" text-anchor="middle">Thu</text><rect x="478.5485714285714" y="224" width="45.76" height="4" rx="2" fill="#E3E6EB"></rect><text class="cg-lbl" x="501.4285714285714" y="245" text-anchor="middle">Fri</text><rect x="560.2628571428571" y="224" width="45.76" height="4" rx="2" fill="#E3E6EB"></rect><text class="cg-lbl" x="583.1428571428571" y="245" text-anchor="middle">Sat</text><line class="cg-lim" x1="52" y1="73.5" x2="624" y2="73.5"></line>
+      <text class="cg-lbl" x="624" y="67.5" text-anchor="end" fill="#C0392B" style="font-weight:700">Limit 1500</text>
+      <line class="cg-axis" x1="52" y1="228" x2="624" y2="228"></line>
+      <text class="cg-lbl" x="52" y="262">Week of 20 Sept 2026 — grey marks = no entry logged</text></svg></div>
+      <div class="chart-legend">
+        <span><i style="background:#10244A"></i>Within limit</span>
+        <span><i style="background:#C0392B"></i>Exceeded limit</span>
+        <span><i style="background:#C0392B;height:3px;border-radius:0"></i>Daily limit</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Weekly Trend — Average per Week</h2>
+      <p class="sub">Daily average for each logged week, showing the direction of your intake over time.</p>
+      <div class="chartbox" id="chartWeekly"><svg viewBox="0 0 640 270" preserveAspectRatio="xMidYMid meet"><line class="cg-grid" x1="52" y1="224" x2="624" y2="224"></line>
+        <text class="cg-lbl" x="44" y="227" text-anchor="end">0</text><line class="cg-grid" x1="52" y1="173.5" x2="624" y2="173.5"></line>
+        <text class="cg-lbl" x="44" y="176.5" text-anchor="end">500</text><line class="cg-grid" x1="52" y1="123" x2="624" y2="123"></line>
+        <text class="cg-lbl" x="44" y="126" text-anchor="end">1000</text><line class="cg-grid" x1="52" y1="72.5" x2="624" y2="72.5"></line>
+        <text class="cg-lbl" x="44" y="75.5" text-anchor="end">1500</text><line class="cg-grid" x1="52" y1="22" x2="624" y2="22"></line>
+        <text class="cg-lbl" x="44" y="25" text-anchor="end">2000</text><rect x="315" y="189.155" width="46" height="34.845" rx="3" fill="#10244A" opacity=".85"><title>W1: 345 kcal/day</title></rect>
+      <text class="cg-lbl" x="338" y="241" text-anchor="middle">W1</text>
+      <text class="cg-lbl" x="338" y="254" text-anchor="middle" style="font-size:9px">20 Sep</text><circle cx="338" cy="189.155" r="4.5" fill="#fff" stroke="#C9A227" stroke-width="2.5"></circle>
+        <text class="cg-val" x="338" y="177.155" text-anchor="middle" fill="#10244A">345</text><line class="cg-lim" x1="52" y1="72.5" x2="624" y2="72.5"></line>
+      <text class="cg-lbl" x="624" y="66.5" text-anchor="end" fill="#C0392B" style="font-weight:700">Limit 1500</text>
+      <line class="cg-axis" x1="52" y1="224" x2="624" y2="224"></line></svg></div>
+      <div class="chart-legend">
+        <span><i style="background:#10244A"></i>Weekly daily-average</span>
+        <span><i style="background:#C9A227"></i>Trend line</span>
+        <span><i style="background:#C0392B;height:3px;border-radius:0"></i>Daily limit</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB 4 -->
+  <div class="panel" id="p4">
+    <div class="card">
+      <h2>Monthly Averages</h2>
+      <p class="sub">Average is calculated over days with logged entries within each calendar month.</p>
+      <div class="stats" id="moStats">
+      <div class="stat under"><div class="k">Current Month Average</div><div class="v">345</div><div class="s">kcal/day</div></div>
+      <div class="stat"><div class="k">Total Intake</div><div class="v">345</div><div class="s">kcal over 1 days</div></div>
+      <div class="stat under"><div class="k">Days Over Limit</div><div class="v">0</div><div class="s">of 1 days</div></div>
+      <div class="stat under"><div class="k">Highest Day</div><div class="v">345</div><div class="s">kcal</div></div></div>
+      <div class="tscroll"><table style="margin-top:16px"><thead><tr><th>Month</th><th>Days Logged</th><th style="text-align:right">Total kcal</th><th style="text-align:right">Daily Average</th><th style="text-align:right">Limit</th><th>Days Over</th><th>Compliance</th><th style="width:130px">Avg vs Limit</th><th>Status</th></tr></thead>
+      <tbody id="moRows"><tr class=""><td>September 2026</td><td>1</td>
+      <td style="text-align:right">345</td><td style="text-align:right"><strong>345</strong></td>
+      <td style="text-align:right">1,500</td><td>0</td><td>100%</td>
+      <td><div class="bar"><span class="" style="width:23%"></span></div></td><td><span class="pill green">Within</span></td></tr></tbody></table></div>
+    </div>
+  </div>
+
+  <!-- TAB 5 -->
+  <div class="panel" id="p5">
+    <div class="card">
+      <h2>Add Your Own Food</h2>
+      <p class="sub">Saved custom foods appear in the auto-lookup on the Daily Log tab.</p>
+      <div class="grid">
+        <div><label>Food Name</label><input id="fName" placeholder="e.g. Mak's curry puff"></div>
+        <div><label>Category</label><select id="fCat">
+          <option>Rice &amp; Noodles</option><option>Protein</option><option>Vegetables</option>
+          <option>Fruits</option><option>Bread &amp; Breakfast</option><option>Snacks &amp; Kuih</option>
+          <option>Beverages</option><option>Western &amp; Fast Food</option><option>Custom</option></select></div>
+        <div><label>Serving Description</label><input id="fServ" placeholder="e.g. 1 piece (60 g)"></div>
+        <div><label>Calories per Serving</label><input id="fCal" type="number" min="0" placeholder="0"></div>
+      </div>
+      <div class="btnrow"><button class="gold" onclick="addFood()">Save to Library</button></div>
+    </div>
+
+    <div class="card">
+      <h2>Food Library</h2>
+      <div class="inline" style="margin-bottom:12px">
+        <div><label>Search</label><input id="fSearch" placeholder="Search food name..." oninput="renderLib()"></div>
+        <div><label>Filter Category</label><select id="fFilter" onchange="renderLib()"><option value="">All categories</option><option>Beverages</option><option>Bread &amp; Breakfast</option><option>Fruits</option><option>Protein</option><option>Rice &amp; Noodles</option><option>Snacks &amp; Kuih</option><option>Vegetables</option><option>Western &amp; Fast Food</option></select></div>
+      </div>
+      <p class="sub" id="libCount">Showing 126 of 126 items (1 custom added by you).</p>
+      <div class="tscroll"><table><thead><tr><th>Food Item</th><th>Category</th><th>Serving</th><th style="text-align:right">kcal</th><th style="width:110px">Action</th></tr></thead>
+      <tbody id="libRows"><tr><td>Americano (no sugar)</td>
+      <td><span class="cat">Beverages</span></td><td>1 cup</td>
+      <td style="text-align:right"><strong>10</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Americano (no sugar)')">Use</button>
+      </td></tr><tr><td>Banana and Dragon Fruit Smoothie <span class="pill green">custom</span></td>
+      <td><span class="cat">Beverages</span></td><td>345</td>
+      <td style="text-align:right"><strong>345</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Banana and Dragon Fruit Smoothie')">Use</button>
+       <button class="danger" style="padding:4px 9px;font-size:11px" onclick="delFood('Banana and Dragon Fruit Smoothie')">Del</button></td></tr><tr><td>Beer</td>
+      <td><span class="cat">Beverages</span></td><td>1 can (330 ml)</td>
+      <td style="text-align:right"><strong>145</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Beer')">Use</button>
+      </td></tr><tr><td>Bubble tea (milk tea, regular)</td>
+      <td><span class="cat">Beverages</span></td><td>1 cup</td>
+      <td style="text-align:right"><strong>330</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Bubble tea (milk tea, regular)')">Use</button>
+      </td></tr><tr><td>Carbonated soft drink</td>
+      <td><span class="cat">Beverages</span></td><td>1 can (330 ml)</td>
+      <td style="text-align:right"><strong>139</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Carbonated soft drink')">Use</button>
+      </td></tr><tr><td>Coconut water</td>
+      <td><span class="cat">Beverages</span></td><td>1 glass</td>
+      <td style="text-align:right"><strong>46</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Coconut water')">Use</button>
+      </td></tr><tr><td>Fresh milk</td>
+      <td><span class="cat">Beverages</span></td><td>1 glass (250 ml)</td>
+      <td style="text-align:right"><strong>150</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Fresh milk')">Use</button>
+      </td></tr><tr><td>Kopi o kosong</td>
+      <td><span class="cat">Beverages</span></td><td>1 glass</td>
+      <td style="text-align:right"><strong>5</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Kopi o kosong')">Use</button>
+      </td></tr><tr><td>Kopi tarik</td>
+      <td><span class="cat">Beverages</span></td><td>1 glass</td>
+      <td style="text-align:right"><strong>170</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Kopi tarik')">Use</button>
+      </td></tr><tr><td>Latte</td>
+      <td><span class="cat">Beverages</span></td><td>1 cup (medium)</td>
+      <td style="text-align:right"><strong>190</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Latte')">Use</button>
+      </td></tr><tr><td>Milo (hot)</td>
+      <td><span class="cat">Beverages</span></td><td>1 glass</td>
+      <td style="text-align:right"><strong>170</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Milo (hot)')">Use</button>
+      </td></tr><tr><td>Milo ais</td>
+      <td><span class="cat">Beverages</span></td><td>1 glass</td>
+      <td style="text-align:right"><strong>230</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Milo ais')">Use</button>
+      </td></tr><tr><td>Orange juice (fresh)</td>
+      <td><span class="cat">Beverages</span></td><td>1 glass</td>
+      <td style="text-align:right"><strong>112</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Orange juice (fresh)')">Use</button>
+      </td></tr><tr><td>Plain water</td>
+      <td><span class="cat">Beverages</span></td><td>1 glass</td>
+      <td style="text-align:right"><strong>0</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Plain water')">Use</button>
+      </td></tr><tr><td>Sirap bandung</td>
+      <td><span class="cat">Beverages</span></td><td>1 glass</td>
+      <td style="text-align:right"><strong>210</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Sirap bandung')">Use</button>
+      </td></tr><tr><td>Soy milk (sweetened)</td>
+      <td><span class="cat">Beverages</span></td><td>1 glass</td>
+      <td style="text-align:right"><strong>130</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Soy milk (sweetened)')">Use</button>
+      </td></tr><tr><td>Sugarcane juice</td>
+      <td><span class="cat">Beverages</span></td><td>1 glass</td>
+      <td style="text-align:right"><strong>180</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Sugarcane juice')">Use</button>
+      </td></tr><tr><td>Teh o kosong</td>
+      <td><span class="cat">Beverages</span></td><td>1 glass</td>
+      <td style="text-align:right"><strong>5</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Teh o kosong')">Use</button>
+      </td></tr><tr><td>Teh tarik</td>
+      <td><span class="cat">Beverages</span></td><td>1 glass</td>
+      <td style="text-align:right"><strong>180</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Teh tarik')">Use</button>
+      </td></tr><tr><td>Chapati</td>
+      <td><span class="cat">Bread &amp; Breakfast</span></td><td>1 piece</td>
+      <td style="text-align:right"><strong>120</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Chapati')">Use</button>
+      </td></tr><tr><td>Cornflakes with milk</td>
+      <td><span class="cat">Bread &amp; Breakfast</span></td><td>1 bowl</td>
+      <td style="text-align:right"><strong>200</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Cornflakes with milk')">Use</button>
+      </td></tr><tr><td>Idli</td>
+      <td><span class="cat">Bread &amp; Breakfast</span></td><td>2 pieces</td>
+      <td style="text-align:right"><strong>120</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Idli')">Use</button>
+      </td></tr><tr><td>Naan</td>
+      <td><span class="cat">Bread &amp; Breakfast</span></td><td>1 piece</td>
+      <td style="text-align:right"><strong>260</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Naan')">Use</button>
+      </td></tr><tr><td>Oatmeal (plain)</td>
+      <td><span class="cat">Bread &amp; Breakfast</span></td><td>1 bowl</td>
+      <td style="text-align:right"><strong>150</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Oatmeal (plain)')">Use</button>
+      </td></tr><tr><td>Pancake</td>
+      <td><span class="cat">Bread &amp; Breakfast</span></td><td>2 pieces</td>
+      <td style="text-align:right"><strong>350</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Pancake')">Use</button>
+      </td></tr><tr><td>Roti bakar with kaya &amp; butter</td>
+      <td><span class="cat">Bread &amp; Breakfast</span></td><td>2 slices</td>
+      <td style="text-align:right"><strong>300</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Roti bakar with kaya &amp; butter')">Use</button>
+      </td></tr><tr><td>Roti canai (plain)</td>
+      <td><span class="cat">Bread &amp; Breakfast</span></td><td>1 piece</td>
+      <td style="text-align:right"><strong>300</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Roti canai (plain)')">Use</button>
+      </td></tr><tr><td>Roti telur</td>
+      <td><span class="cat">Bread &amp; Breakfast</span></td><td>1 piece</td>
+      <td style="text-align:right"><strong>400</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Roti telur')">Use</button>
+      </td></tr><tr><td>Thosai (plain)</td>
+      <td><span class="cat">Bread &amp; Breakfast</span></td><td>1 piece</td>
+      <td style="text-align:right"><strong>170</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Thosai (plain)')">Use</button>
+      </td></tr><tr><td>White bread</td>
+      <td><span class="cat">Bread &amp; Breakfast</span></td><td>1 slice</td>
+      <td style="text-align:right"><strong>80</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('White bread')">Use</button>
+      </td></tr><tr><td>Wholemeal bread</td>
+      <td><span class="cat">Bread &amp; Breakfast</span></td><td>1 slice</td>
+      <td style="text-align:right"><strong>75</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Wholemeal bread')">Use</button>
+      </td></tr><tr><td>Apple</td>
+      <td><span class="cat">Fruits</span></td><td>1 medium</td>
+      <td style="text-align:right"><strong>95</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Apple')">Use</button>
+      </td></tr><tr><td>Avocado</td>
+      <td><span class="cat">Fruits</span></td><td>1/2 fruit</td>
+      <td style="text-align:right"><strong>160</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Avocado')">Use</button>
+      </td></tr><tr><td>Banana</td>
+      <td><span class="cat">Fruits</span></td><td>1 medium</td>
+      <td style="text-align:right"><strong>105</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Banana')">Use</button>
+      </td></tr><tr><td>Durian</td>
+      <td><span class="cat">Fruits</span></td><td>3 seeds (100 g)</td>
+      <td style="text-align:right"><strong>147</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Durian')">Use</button>
+      </td></tr><tr><td>Grapes</td>
+      <td><span class="cat">Fruits</span></td><td>1 cup</td>
+      <td style="text-align:right"><strong>104</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Grapes')">Use</button>
+      </td></tr><tr><td>Guava</td>
+      <td><span class="cat">Fruits</span></td><td>1 medium</td>
+      <td style="text-align:right"><strong>112</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Guava')">Use</button>
+      </td></tr><tr><td>Mango</td>
+      <td><span class="cat">Fruits</span></td><td>1 medium</td>
+      <td style="text-align:right"><strong>200</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Mango')">Use</button>
+      </td></tr><tr><td>Orange</td>
+      <td><span class="cat">Fruits</span></td><td>1 medium</td>
+      <td style="text-align:right"><strong>62</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Orange')">Use</button>
+      </td></tr><tr><td>Papaya</td>
+      <td><span class="cat">Fruits</span></td><td>1 cup diced</td>
+      <td style="text-align:right"><strong>55</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Papaya')">Use</button>
+      </td></tr><tr><td>Pineapple</td>
+      <td><span class="cat">Fruits</span></td><td>1 cup diced</td>
+      <td style="text-align:right"><strong>82</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Pineapple')">Use</button>
+      </td></tr><tr><td>Rambutan</td>
+      <td><span class="cat">Fruits</span></td><td>10 pieces</td>
+      <td style="text-align:right"><strong>75</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Rambutan')">Use</button>
+      </td></tr><tr><td>Watermelon</td>
+      <td><span class="cat">Fruits</span></td><td>1 cup diced</td>
+      <td style="text-align:right"><strong>46</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Watermelon')">Use</button>
+      </td></tr><tr><td>Ayam masak merah</td>
+      <td><span class="cat">Protein</span></td><td>1 serving</td>
+      <td style="text-align:right"><strong>330</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Ayam masak merah')">Use</button>
+      </td></tr><tr><td>Bacon</td>
+      <td><span class="cat">Protein</span></td><td>2 slices</td>
+      <td style="text-align:right"><strong>90</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Bacon')">Use</button>
+      </td></tr><tr><td>Beef steak (lean)</td>
+      <td><span class="cat">Protein</span></td><td>150 g</td>
+      <td style="text-align:right"><strong>330</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Beef steak (lean)')">Use</button>
+      </td></tr><tr><td>Boiled egg</td>
+      <td><span class="cat">Protein</span></td><td>1 egg</td>
+      <td style="text-align:right"><strong>78</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Boiled egg')">Use</button>
+      </td></tr><tr><td>Chicken curry</td>
+      <td><span class="cat">Protein</span></td><td>1 serving</td>
+      <td style="text-align:right"><strong>350</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Chicken curry')">Use</button>
+      </td></tr><tr><td>Dhal curry</td>
+      <td><span class="cat">Protein</span></td><td>1 serving</td>
+      <td style="text-align:right"><strong>180</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Dhal curry')">Use</button>
+      </td></tr><tr><td>Fried chicken (drumstick)</td>
+      <td><span class="cat">Protein</span></td><td>1 piece</td>
+      <td style="text-align:right"><strong>260</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Fried chicken (drumstick)')">Use</button>
+      </td></tr><tr><td>Fried egg</td>
+      <td><span class="cat">Protein</span></td><td>1 egg</td>
+      <td style="text-align:right"><strong>120</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Fried egg')">Use</button>
+      </td></tr><tr><td>Fried fish (whole, medium)</td>
+      <td><span class="cat">Protein</span></td><td>1 piece</td>
+      <td style="text-align:right"><strong>280</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Fried fish (whole, medium)')">Use</button>
+      </td></tr><tr><td>Grilled chicken breast</td>
+      <td><span class="cat">Protein</span></td><td>100 g</td>
+      <td style="text-align:right"><strong>165</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Grilled chicken breast')">Use</button>
+      </td></tr><tr><td>Ikan bakar</td>
+      <td><span class="cat">Protein</span></td><td>1 piece</td>
+      <td style="text-align:right"><strong>250</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Ikan bakar')">Use</button>
+      </td></tr><tr><td>Prawns (cooked)</td>
+      <td><span class="cat">Protein</span></td><td>100 g</td>
+      <td style="text-align:right"><strong>99</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Prawns (cooked)')">Use</button>
+      </td></tr><tr><td>Rendang daging</td>
+      <td><span class="cat">Protein</span></td><td>1 serving</td>
+      <td style="text-align:right"><strong>420</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Rendang daging')">Use</button>
+      </td></tr><tr><td>Sambal sotong</td>
+      <td><span class="cat">Protein</span></td><td>1 serving</td>
+      <td style="text-align:right"><strong>280</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Sambal sotong')">Use</button>
+      </td></tr><tr><td>Satay (chicken)</td>
+      <td><span class="cat">Protein</span></td><td>1 stick</td>
+      <td style="text-align:right"><strong>45</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Satay (chicken)')">Use</button>
+      </td></tr><tr><td>Sausage</td>
+      <td><span class="cat">Protein</span></td><td>1 piece</td>
+      <td style="text-align:right"><strong>120</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Sausage')">Use</button>
+      </td></tr><tr><td>Steamed fish</td>
+      <td><span class="cat">Protein</span></td><td>1 serving</td>
+      <td style="text-align:right"><strong>200</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Steamed fish')">Use</button>
+      </td></tr><tr><td>Telur dadar (omelette)</td>
+      <td><span class="cat">Protein</span></td><td>1 serving</td>
+      <td style="text-align:right"><strong>180</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Telur dadar (omelette)')">Use</button>
+      </td></tr><tr><td>Tempeh (fried)</td>
+      <td><span class="cat">Protein</span></td><td>1 serving</td>
+      <td style="text-align:right"><strong>220</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Tempeh (fried)')">Use</button>
+      </td></tr><tr><td>Tofu (fried)</td>
+      <td><span class="cat">Protein</span></td><td>2 pieces</td>
+      <td style="text-align:right"><strong>180</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Tofu (fried)')">Use</button>
+      </td></tr><tr><td>Bee hoon soup</td>
+      <td><span class="cat">Rice &amp; Noodles</span></td><td>1 bowl</td>
+      <td style="text-align:right"><strong>320</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Bee hoon soup')">Use</button>
+      </td></tr><tr><td>Brown rice</td>
+      <td><span class="cat">Rice &amp; Noodles</span></td><td>1 cup cooked (200 g)</td>
+      <td style="text-align:right"><strong>248</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Brown rice')">Use</button>
+      </td></tr><tr><td>Char kuey teow</td>
+      <td><span class="cat">Rice &amp; Noodles</span></td><td>1 plate</td>
+      <td style="text-align:right"><strong>742</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Char kuey teow')">Use</button>
+      </td></tr><tr><td>Chicken porridge</td>
+      <td><span class="cat">Rice &amp; Noodles</span></td><td>1 bowl</td>
+      <td style="text-align:right"><strong>260</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Chicken porridge')">Use</button>
+      </td></tr><tr><td>Chicken rice</td>
+      <td><span class="cat">Rice &amp; Noodles</span></td><td>1 plate</td>
+      <td style="text-align:right"><strong>607</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Chicken rice')">Use</button>
+      </td></tr><tr><td>Curry mee</td>
+      <td><span class="cat">Rice &amp; Noodles</span></td><td>1 bowl</td>
+      <td style="text-align:right"><strong>575</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Curry mee')">Use</button>
+      </td></tr><tr><td>Fried bee hoon</td>
+      <td><span class="cat">Rice &amp; Noodles</span></td><td>1 plate</td>
+      <td style="text-align:right"><strong>500</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Fried bee hoon')">Use</button>
+      </td></tr><tr><td>Hokkien mee</td>
+      <td><span class="cat">Rice &amp; Noodles</span></td><td>1 bowl</td>
+      <td style="text-align:right"><strong>600</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Hokkien mee')">Use</button>
+      </td></tr><tr><td>Instant noodles (soup)</td>
+      <td><span class="cat">Rice &amp; Noodles</span></td><td>1 pack</td>
+      <td style="text-align:right"><strong>380</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Instant noodles (soup)')">Use</button>
+      </td></tr><tr><td>Kuey teow soup</td>
+      <td><span class="cat">Rice &amp; Noodles</span></td><td>1 bowl</td>
+      <td style="text-align:right"><strong>350</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Kuey teow soup')">Use</button>
+      </td></tr><tr><td>Laksa (asam)</td>
+      <td><span class="cat">Rice &amp; Noodles</span></td><td>1 bowl</td>
+      <td style="text-align:right"><strong>420</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Laksa (asam)')">Use</button>
+      </td></tr><tr><td>Laksa (curry)</td>
+      <td><span class="cat">Rice &amp; Noodles</span></td><td>1 bowl</td>
+      <td style="text-align:right"><strong>590</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Laksa (curry)')">Use</button>
+      </td></tr><tr><td>Lontong</td>
+      <td><span class="cat">Rice &amp; Noodles</span></td><td>1 bowl</td>
+      <td style="text-align:right"><strong>450</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Lontong')">Use</button>
+      </td></tr><tr><td>Maggi goreng</td>
+      <td><span class="cat">Rice &amp; Noodles</span></td><td>1 plate</td>
+      <td style="text-align:right"><strong>560</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Maggi goreng')">Use</button>
+      </td></tr><tr><td>Mee goreng mamak</td>
+      <td><span class="cat">Rice &amp; Noodles</span></td><td>1 plate</td>
+      <td style="text-align:right"><strong>660</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Mee goreng mamak')">Use</button>
+      </td></tr><tr><td>Mee soup</td>
+      <td><span class="cat">Rice &amp; Noodles</span></td><td>1 bowl</td>
+      <td style="text-align:right"><strong>380</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Mee soup')">Use</button>
+      </td></tr><tr><td>Nasi briyani with chicken</td>
+      <td><span class="cat">Rice &amp; Noodles</span></td><td>1 plate</td>
+      <td style="text-align:right"><strong>895</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Nasi briyani with chicken')">Use</button>
+      </td></tr><tr><td>Nasi goreng kampung</td>
+      <td><span class="cat">Rice &amp; Noodles</span></td><td>1 plate</td>
+      <td style="text-align:right"><strong>637</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Nasi goreng kampung')">Use</button>
+      </td></tr><tr><td>Nasi kandar with chicken curry</td>
+      <td><span class="cat">Rice &amp; Noodles</span></td><td>1 plate</td>
+      <td style="text-align:right"><strong>780</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Nasi kandar with chicken curry')">Use</button>
+      </td></tr><tr><td>Nasi kerabu</td>
+      <td><span class="cat">Rice &amp; Noodles</span></td><td>1 plate</td>
+      <td style="text-align:right"><strong>560</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Nasi kerabu')">Use</button>
+      </td></tr><tr><td>Nasi lemak (plain, bungkus)</td>
+      <td><span class="cat">Rice &amp; Noodles</span></td><td>1 packet</td>
+      <td style="text-align:right"><strong>389</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Nasi lemak (plain, bungkus)')">Use</button>
+      </td></tr><tr><td>Nasi lemak (with sambal &amp; egg)</td>
+      <td><span class="cat">Rice &amp; Noodles</span></td><td>1 plate</td>
+      <td style="text-align:right"><strong>644</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Nasi lemak (with sambal &amp; egg)')">Use</button>
+      </td></tr><tr><td>Porridge (plain rice)</td>
+      <td><span class="cat">Rice &amp; Noodles</span></td><td>1 bowl</td>
+      <td style="text-align:right"><strong>150</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Porridge (plain rice)')">Use</button>
+      </td></tr><tr><td>Spaghetti bolognese</td>
+      <td><span class="cat">Rice &amp; Noodles</span></td><td>1 plate</td>
+      <td style="text-align:right"><strong>540</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Spaghetti bolognese')">Use</button>
+      </td></tr><tr><td>Wantan mee (dry)</td>
+      <td><span class="cat">Rice &amp; Noodles</span></td><td>1 bowl</td>
+      <td style="text-align:right"><strong>540</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Wantan mee (dry)')">Use</button>
+      </td></tr><tr><td>White rice</td>
+      <td><span class="cat">Rice &amp; Noodles</span></td><td>1 cup cooked (200 g)</td>
+      <td style="text-align:right"><strong>260</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('White rice')">Use</button>
+      </td></tr><tr><td>Biscuits (cream)</td>
+      <td><span class="cat">Snacks &amp; Kuih</span></td><td>3 pieces</td>
+      <td style="text-align:right"><strong>160</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Biscuits (cream)')">Use</button>
+      </td></tr><tr><td>Cheesecake</td>
+      <td><span class="cat">Snacks &amp; Kuih</span></td><td>1 slice</td>
+      <td style="text-align:right"><strong>350</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Cheesecake')">Use</button>
+      </td></tr><tr><td>Chocolate bar</td>
+      <td><span class="cat">Snacks &amp; Kuih</span></td><td>1 bar (45 g)</td>
+      <td style="text-align:right"><strong>235</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Chocolate bar')">Use</button>
+      </td></tr><tr><td>Curry puff</td>
+      <td><span class="cat">Snacks &amp; Kuih</span></td><td>1 piece</td>
+      <td style="text-align:right"><strong>130</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Curry puff')">Use</button>
+      </td></tr><tr><td>Doughnut (glazed)</td>
+      <td><span class="cat">Snacks &amp; Kuih</span></td><td>1 piece</td>
+      <td style="text-align:right"><strong>260</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Doughnut (glazed)')">Use</button>
+      </td></tr><tr><td>Ice cream</td>
+      <td><span class="cat">Snacks &amp; Kuih</span></td><td>1 scoop</td>
+      <td style="text-align:right"><strong>140</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Ice cream')">Use</button>
+      </td></tr><tr><td>Keropok lekor</td>
+      <td><span class="cat">Snacks &amp; Kuih</span></td><td>5 pieces</td>
+      <td style="text-align:right"><strong>200</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Keropok lekor')">Use</button>
+      </td></tr><tr><td>Kuih cara</td>
+      <td><span class="cat">Snacks &amp; Kuih</span></td><td>2 pieces</td>
+      <td style="text-align:right"><strong>130</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Kuih cara')">Use</button>
+      </td></tr><tr><td>Kuih ketayap</td>
+      <td><span class="cat">Snacks &amp; Kuih</span></td><td>1 piece</td>
+      <td style="text-align:right"><strong>110</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Kuih ketayap')">Use</button>
+      </td></tr><tr><td>Kuih lapis</td>
+      <td><span class="cat">Snacks &amp; Kuih</span></td><td>1 piece</td>
+      <td style="text-align:right"><strong>120</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Kuih lapis')">Use</button>
+      </td></tr><tr><td>Onde-onde</td>
+      <td><span class="cat">Snacks &amp; Kuih</span></td><td>3 pieces</td>
+      <td style="text-align:right"><strong>150</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Onde-onde')">Use</button>
+      </td></tr><tr><td>Peanuts (roasted)</td>
+      <td><span class="cat">Snacks &amp; Kuih</span></td><td>1 handful (30 g)</td>
+      <td style="text-align:right"><strong>170</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Peanuts (roasted)')">Use</button>
+      </td></tr><tr><td>Pisang goreng</td>
+      <td><span class="cat">Snacks &amp; Kuih</span></td><td>1 piece</td>
+      <td style="text-align:right"><strong>110</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Pisang goreng')">Use</button>
+      </td></tr><tr><td>Popcorn (plain)</td>
+      <td><span class="cat">Snacks &amp; Kuih</span></td><td>1 cup</td>
+      <td style="text-align:right"><strong>31</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Popcorn (plain)')">Use</button>
+      </td></tr><tr><td>Potato chips</td>
+      <td><span class="cat">Snacks &amp; Kuih</span></td><td>small bag (50 g)</td>
+      <td style="text-align:right"><strong>270</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Potato chips')">Use</button>
+      </td></tr><tr><td>Seri muka</td>
+      <td><span class="cat">Snacks &amp; Kuih</span></td><td>1 piece</td>
+      <td style="text-align:right"><strong>160</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Seri muka')">Use</button>
+      </td></tr><tr><td>Acar</td>
+      <td><span class="cat">Vegetables</span></td><td>1 serving</td>
+      <td style="text-align:right"><strong>110</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Acar')">Use</button>
+      </td></tr><tr><td>Kangkung belacan</td>
+      <td><span class="cat">Vegetables</span></td><td>1 serving</td>
+      <td style="text-align:right"><strong>180</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Kangkung belacan')">Use</button>
+      </td></tr><tr><td>Salad (garden, no dressing)</td>
+      <td><span class="cat">Vegetables</span></td><td>1 bowl</td>
+      <td style="text-align:right"><strong>60</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Salad (garden, no dressing)')">Use</button>
+      </td></tr><tr><td>Salad with mayo dressing</td>
+      <td><span class="cat">Vegetables</span></td><td>1 bowl</td>
+      <td style="text-align:right"><strong>230</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Salad with mayo dressing')">Use</button>
+      </td></tr><tr><td>Sayur lodeh</td>
+      <td><span class="cat">Vegetables</span></td><td>1 serving</td>
+      <td style="text-align:right"><strong>180</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Sayur lodeh')">Use</button>
+      </td></tr><tr><td>Steamed broccoli</td>
+      <td><span class="cat">Vegetables</span></td><td>1 cup</td>
+      <td style="text-align:right"><strong>55</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Steamed broccoli')">Use</button>
+      </td></tr><tr><td>Stir-fried mixed vegetables</td>
+      <td><span class="cat">Vegetables</span></td><td>1 serving</td>
+      <td style="text-align:right"><strong>120</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Stir-fried mixed vegetables')">Use</button>
+      </td></tr><tr><td>Ulam with sambal</td>
+      <td><span class="cat">Vegetables</span></td><td>1 serving</td>
+      <td style="text-align:right"><strong>90</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Ulam with sambal')">Use</button>
+      </td></tr><tr><td>Vegetable soup</td>
+      <td><span class="cat">Vegetables</span></td><td>1 bowl</td>
+      <td style="text-align:right"><strong>90</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Vegetable soup')">Use</button>
+      </td></tr><tr><td>Caesar salad with chicken</td>
+      <td><span class="cat">Western &amp; Fast Food</span></td><td>1 bowl</td>
+      <td style="text-align:right"><strong>470</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Caesar salad with chicken')">Use</button>
+      </td></tr><tr><td>Cheeseburger</td>
+      <td><span class="cat">Western &amp; Fast Food</span></td><td>1 piece</td>
+      <td style="text-align:right"><strong>300</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Cheeseburger')">Use</button>
+      </td></tr><tr><td>Chicken chop with fries</td>
+      <td><span class="cat">Western &amp; Fast Food</span></td><td>1 plate</td>
+      <td style="text-align:right"><strong>750</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Chicken chop with fries')">Use</button>
+      </td></tr><tr><td>Club sandwich</td>
+      <td><span class="cat">Western &amp; Fast Food</span></td><td>1 set</td>
+      <td style="text-align:right"><strong>600</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Club sandwich')">Use</button>
+      </td></tr><tr><td>Double cheeseburger</td>
+      <td><span class="cat">Western &amp; Fast Food</span></td><td>1 piece</td>
+      <td style="text-align:right"><strong>450</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Double cheeseburger')">Use</button>
+      </td></tr><tr><td>Fish &amp; chips</td>
+      <td><span class="cat">Western &amp; Fast Food</span></td><td>1 plate</td>
+      <td style="text-align:right"><strong>820</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Fish &amp; chips')">Use</button>
+      </td></tr><tr><td>French fries</td>
+      <td><span class="cat">Western &amp; Fast Food</span></td><td>1 medium</td>
+      <td style="text-align:right"><strong>340</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('French fries')">Use</button>
+      </td></tr><tr><td>Fried chicken (fast food)</td>
+      <td><span class="cat">Western &amp; Fast Food</span></td><td>1 piece</td>
+      <td style="text-align:right"><strong>290</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Fried chicken (fast food)')">Use</button>
+      </td></tr><tr><td>Hot dog</td>
+      <td><span class="cat">Western &amp; Fast Food</span></td><td>1 piece</td>
+      <td style="text-align:right"><strong>290</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Hot dog')">Use</button>
+      </td></tr><tr><td>Nuggets</td>
+      <td><span class="cat">Western &amp; Fast Food</span></td><td>6 pieces</td>
+      <td style="text-align:right"><strong>270</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Nuggets')">Use</button>
+      </td></tr><tr><td>Pizza (cheese)</td>
+      <td><span class="cat">Western &amp; Fast Food</span></td><td>1 slice</td>
+      <td style="text-align:right"><strong>285</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Pizza (cheese)')">Use</button>
+      </td></tr><tr><td>Sandwich (tuna)</td>
+      <td><span class="cat">Western &amp; Fast Food</span></td><td>1 piece</td>
+      <td style="text-align:right"><strong>290</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('Sandwich (tuna)')">Use</button>
+      </td></tr></tbody></table></div>
+      <p class="note">Calorie values are approximate reference figures for a typical serving. Actual values vary with recipe, oil used, and portion size — adjust the calories field manually whenever you know the exact value.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+const LS_P='cal_profile_v1', LS_E='cal_entries_v1', LS_F='cal_foods_v1';
+/* Safari Private Browsing throws on localStorage — fall back to memory so the app still runs */
+let LS_OK=true;
+const mem={};
+try{localStorage.setItem('__t','1');localStorage.removeItem('__t')}catch(e){LS_OK=false}
+function lsGet(k){try{return LS_OK?localStorage.getItem(k):(mem[k]??null)}catch(e){return mem[k]??null}}
+function lsSet(k,v){try{LS_OK?localStorage.setItem(k,v):mem[k]=v}catch(e){LS_OK=false;mem[k]=v}}
+function lsDel(k){try{LS_OK&&localStorage.removeItem(k)}catch(e){}delete mem[k]}
+function safeParse(k,d){try{return JSON.parse(lsGet(k)||d)}catch(e){return JSON.parse(d)}}
+
+let profile=safeParse(LS_P,'null');
+let entries=safeParse(LS_E,'[]');
+let custom=safeParse(LS_F,'[]');
+
+/* ============ BUILT-IN FOOD LIBRARY (approximate kcal per serving) ============ */
+const R='Rice & Noodles', P='Protein', V='Vegetables', F='Fruits',
+      B='Bread & Breakfast', S='Snacks & Kuih', D='Beverages', W='Western & Fast Food';
+const FOOD_DB=[
+/* Rice & noodles */
+['Nasi lemak (with sambal & egg)',R,'1 plate',644],
+['Nasi lemak (plain, bungkus)',R,'1 packet',389],
+['White rice',R,'1 cup cooked (200 g)',260],
+['Brown rice',R,'1 cup cooked (200 g)',248],
+['Nasi goreng kampung',R,'1 plate',637],
+['Nasi briyani with chicken',R,'1 plate',895],
+['Chicken rice',R,'1 plate',607],
+['Nasi kandar with chicken curry',R,'1 plate',780],
+['Char kuey teow',R,'1 plate',742],
+['Mee goreng mamak',R,'1 plate',660],
+['Maggi goreng',R,'1 plate',560],
+['Hokkien mee',R,'1 bowl',600],
+['Wantan mee (dry)',R,'1 bowl',540],
+['Curry mee',R,'1 bowl',575],
+['Laksa (asam)',R,'1 bowl',420],
+['Laksa (curry)',R,'1 bowl',590],
+['Mee soup',R,'1 bowl',380],
+['Bee hoon soup',R,'1 bowl',320],
+['Kuey teow soup',R,'1 bowl',350],
+['Fried bee hoon',R,'1 plate',500],
+['Lontong',R,'1 bowl',450],
+['Nasi kerabu',R,'1 plate',560],
+['Porridge (plain rice)',R,'1 bowl',150],
+['Chicken porridge',R,'1 bowl',260],
+['Instant noodles (soup)',R,'1 pack',380],
+['Spaghetti bolognese',R,'1 plate',540],
+/* Protein */
+['Fried chicken (drumstick)',P,'1 piece',260],
+['Grilled chicken breast',P,'100 g',165],
+['Chicken curry',P,'1 serving',350],
+['Ayam masak merah',P,'1 serving',330],
+['Rendang daging',P,'1 serving',420],
+['Beef steak (lean)',P,'150 g',330],
+['Fried fish (whole, medium)',P,'1 piece',280],
+['Steamed fish',P,'1 serving',200],
+['Ikan bakar',P,'1 piece',250],
+['Sambal sotong',P,'1 serving',280],
+['Prawns (cooked)',P,'100 g',99],
+['Boiled egg',P,'1 egg',78],
+['Fried egg',P,'1 egg',120],
+['Telur dadar (omelette)',P,'1 serving',180],
+['Tofu (fried)',P,'2 pieces',180],
+['Tempeh (fried)',P,'1 serving',220],
+['Dhal curry',P,'1 serving',180],
+['Satay (chicken)',P,'1 stick',45],
+['Sausage',P,'1 piece',120],
+['Bacon',P,'2 slices',90],
+/* Vegetables */
+['Kangkung belacan',V,'1 serving',180],
+['Stir-fried mixed vegetables',V,'1 serving',120],
+['Sayur lodeh',V,'1 serving',180],
+['Ulam with sambal',V,'1 serving',90],
+['Salad (garden, no dressing)',V,'1 bowl',60],
+['Salad with mayo dressing',V,'1 bowl',230],
+['Steamed broccoli',V,'1 cup',55],
+['Acar',V,'1 serving',110],
+['Vegetable soup',V,'1 bowl',90],
+/* Fruits */
+['Apple',F,'1 medium',95],
+['Banana',F,'1 medium',105],
+['Orange',F,'1 medium',62],
+['Papaya',F,'1 cup diced',55],
+['Watermelon',F,'1 cup diced',46],
+['Mango',F,'1 medium',200],
+['Guava',F,'1 medium',112],
+['Pineapple',F,'1 cup diced',82],
+['Grapes',F,'1 cup',104],
+['Durian',F,'3 seeds (100 g)',147],
+['Rambutan',F,'10 pieces',75],
+['Avocado',F,'1/2 fruit',160],
+/* Bread & breakfast */
+['Roti canai (plain)',B,'1 piece',300],
+['Roti telur',B,'1 piece',400],
+['Roti bakar with kaya & butter',B,'2 slices',300],
+['White bread',B,'1 slice',80],
+['Wholemeal bread',B,'1 slice',75],
+['Thosai (plain)',B,'1 piece',170],
+['Idli',B,'2 pieces',120],
+['Chapati',B,'1 piece',120],
+['Naan',B,'1 piece',260],
+['Oatmeal (plain)',B,'1 bowl',150],
+['Cornflakes with milk',B,'1 bowl',200],
+['Pancake',B,'2 pieces',350],
+/* Snacks & kuih */
+['Curry puff',S,'1 piece',130],
+['Keropok lekor',S,'5 pieces',200],
+['Pisang goreng',S,'1 piece',110],
+['Kuih lapis',S,'1 piece',120],
+['Onde-onde',S,'3 pieces',150],
+['Seri muka',S,'1 piece',160],
+['Kuih ketayap',S,'1 piece',110],
+['Potato chips',S,'small bag (50 g)',270],
+['Biscuits (cream)',S,'3 pieces',160],
+['Chocolate bar',S,'1 bar (45 g)',235],
+['Ice cream',S,'1 scoop',140],
+['Peanuts (roasted)',S,'1 handful (30 g)',170],
+['Popcorn (plain)',S,'1 cup',31],
+['Doughnut (glazed)',S,'1 piece',260],
+['Cheesecake',S,'1 slice',350],
+['Kuih cara',S,'2 pieces',130],
+/* Beverages */
+['Plain water',D,'1 glass',0],
+['Teh tarik',D,'1 glass',180],
+['Teh o kosong',D,'1 glass',5],
+['Kopi o kosong',D,'1 glass',5],
+['Kopi tarik',D,'1 glass',170],
+['Milo (hot)',D,'1 glass',170],
+['Milo ais',D,'1 glass',230],
+['Sirap bandung',D,'1 glass',210],
+['Orange juice (fresh)',D,'1 glass',112],
+['Sugarcane juice',D,'1 glass',180],
+['Carbonated soft drink',D,'1 can (330 ml)',139],
+['Fresh milk',D,'1 glass (250 ml)',150],
+['Soy milk (sweetened)',D,'1 glass',130],
+['Coconut water',D,'1 glass',46],
+['Latte',D,'1 cup (medium)',190],
+['Americano (no sugar)',D,'1 cup',10],
+['Bubble tea (milk tea, regular)',D,'1 cup',330],
+['Beer',D,'1 can (330 ml)',145],
+/* Western & fast food */
+['Cheeseburger',W,'1 piece',300],
+['Double cheeseburger',W,'1 piece',450],
+['French fries',W,'1 medium',340],
+['Fried chicken (fast food)',W,'1 piece',290],
+['Pizza (cheese)',W,'1 slice',285],
+['Sandwich (tuna)',W,'1 piece',290],
+['Club sandwich',W,'1 set',600],
+['Chicken chop with fries',W,'1 plate',750],
+['Fish & chips',W,'1 plate',820],
+['Caesar salad with chicken',W,'1 bowl',470],
+['Nuggets',W,'6 pieces',270],
+['Hot dog',W,'1 piece',290]
+].map(r=>({name:r[0],cat:r[1],serv:r[2],kcal:r[3],builtin:true}));
+
+function allFoods(){return FOOD_DB.concat(custom)}
+function findFood(name){
+  const n=(name||'').trim().toLowerCase();
+  if(!n)return null;
+  const list=allFoods();
+  return list.find(f=>f.name.toLowerCase()===n)
+      || list.find(f=>f.name.toLowerCase().startsWith(n))
+      || list.find(f=>f.name.toLowerCase().includes(n)) || null;
+}
+
+document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{
+  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));
+  t.classList.add('active'); document.getElementById(t.dataset.p).classList.add('active');
+});
+
+function $(id){return document.getElementById(id)}
+function num(v){return Math.round(v).toLocaleString()}
+
+function limit(){return profile?profile.limit:0}
+
+function saveProfile(){
+  const g=$('pGender').value, a=+$('pAge').value, h=+$('pHeight').value, w=+$('pWeight').value,
+        act=+$('pAct').value, goal=+$('pGoal').value, man=$('pManual').value;
+  if(!a||!h||!w){alert('Please complete age, height and weight.');return}
+  const bmr = g==='male' ? 10*w+6.25*h-5*a+5 : 10*w+6.25*h-5*a-161;
+  const tdee = bmr*act;
+  const lim = man? +man : Math.round(tdee+goal);
+  const bmi = w/Math.pow(h/100,2);
+  profile={name:$('pName').value,gender:g,age:a,height:h,weight:w,act,goal,manual:man,
+           bmr:Math.round(bmr),tdee:Math.round(tdee),limit:lim,bmi:bmi};
+  lsSet(LS_P,JSON.stringify(profile));
+  renderAll();
+}
+function loadProfile(){
+  if(!profile)return;
+  $('pName').value=profile.name||''; $('pGender').value=profile.gender; $('pAge').value=profile.age;
+  $('pHeight').value=profile.height; $('pWeight').value=profile.weight; $('pAct').value=profile.act;
+  $('pGoal').value=profile.goal; $('pManual').value=profile.manual||'';
+}
+function bmiCat(b){return b<18.5?'Underweight':b<25?'Normal weight':b<30?'Overweight':'Obese'}
+
+function addEntry(){
+  if(!profile){alert('Please complete Tab 1 (Personal Information) first.');
+    document.querySelector('.tab').click();return}
+  const d=$('eDate').value, item=$('eItem').value.trim(), c=+$('eCal').value;
+  if(!d||!item||c<0||isNaN(c)||c===0){alert('Please fill date, food item and calories.');return}
+  const f=findFood(item), p=+$('ePortion').value;
+  entries.push({id:Date.now(),date:d,meal:$('eMeal').value,item,cal:c,
+                portion:p, serv:f?f.serv:'custom entry'});
+  lsSet(LS_E,JSON.stringify(entries));
+  $('eItem').value=''; $('eCal').value=''; $('ePortion').value='1';
+  lookupFood(); renderAll();
+}
+
+/* ============ AUTO CALORIE LOOKUP ============ */
+function portionLabel(p){
+  const m={0.25:'¼',0.5:'½',0.75:'¾',1:'1',1.5:'1½',2:'2',2.5:'2½',3:'3'};
+  return (m[p]||p)+' × ';
+}
+function buildDatalist(){
+  const sel=$('fFilter'), cur=sel.value;
+  const cats=[...new Set(allFoods().map(f=>f.cat))].sort();
+  sel.innerHTML='<option value="">All categories</option>'+cats.map(c=>`<option>${c}</option>`).join('');
+  sel.value=cur;
+}
+function lookupFood(){
+  const raw=$('eItem').value.trim(), box=$('lookupBox'), p=+$('ePortion').value;
+  if(!raw){box.className='lookup';
+    box.textContent='Type a food name — calories fill in automatically from the food library.';
+    return}
+  const f=findFood(raw);
+  if(f){
+    const kcal=Math.round(f.kcal*p);
+    $('eCal').value=kcal;
+    box.className='lookup hit';
+    box.innerHTML=`✓ <b>${f.name}</b> — ${f.serv} @ ${f.kcal} kcal &nbsp;→&nbsp;
+      ${portionLabel(p)}serving = <b>${num(kcal)} kcal</b>
+      <span class="cat" style="margin-left:8px">${f.cat}</span>`;
+  }else{
+    box.className='lookup miss';
+    box.innerHTML=`⚠ <b>"${raw}"</b> is not in the library — please key in the calories manually,
+      or add it under <b>Tab 5 · Food Library</b> so it auto-fills next time.`;
+  }
+}
+function gotoLibrary(){document.querySelector('.tab[data-p="p5"]').click();window.scrollTo(0,0)}
+
+/* ---- Custom suggestion dropdown (works on iOS Safari, unlike <datalist>) ---- */
+function showSuggest(){
+  const q=$('eItem').value.trim().toLowerCase(), box=$('suggest');
+  if(!q){box.classList.remove('on');box.innerHTML='';return}
+  const list=allFoods()
+    .filter(f=>f.name.toLowerCase().includes(q))
+    .sort((a,b)=>{
+      const as=a.name.toLowerCase().startsWith(q)?0:1, bs=b.name.toLowerCase().startsWith(q)?0:1;
+      return as-bs || a.name.localeCompare(b.name);
+    }).slice(0,40);
+  if(!list.length){box.classList.remove('on');box.innerHTML='';return}
+  box.innerHTML=list.map(f=>
+    `<div data-n="${f.name.replace(/"/g,'&quot;')}">
+       <span class="nm">${f.name}<span class="sv">${f.serv} · ${f.cat}</span></span>
+       <span class="kc">${f.kcal} kcal</span></div>`).join('');
+  box.classList.add('on');
+  box.querySelectorAll('div[data-n]').forEach(d=>{
+    const pick=ev=>{ev.preventDefault();$('eItem').value=d.dataset.n;
+      box.classList.remove('on');box.innerHTML='';lookupFood();$('eCal').focus();$('eCal').blur();};
+    d.addEventListener('touchstart',pick,{passive:false});
+    d.addEventListener('mousedown',pick);
+  });
+}
+function hideSuggest(){const b=$('suggest');b.classList.remove('on');b.innerHTML=''}
+document.addEventListener('click',e=>{if(!e.target.closest('.ac'))hideSuggest()});
+
+/* ============ CUSTOM FOOD LIBRARY ============ */
+function addFood(){
+  const n=$('fName').value.trim(), c=+$('fCal').value, s=$('fServ').value.trim()||'1 serving';
+  if(!n||!c){alert('Please enter the food name and calories per serving.');return}
+  if(allFoods().some(f=>f.name.toLowerCase()===n.toLowerCase())){
+    alert('"'+n+'" already exists in the library.');return}
+  custom.push({name:n,cat:$('fCat').value,serv:s,kcal:c,builtin:false});
+  lsSet(LS_F,JSON.stringify(custom));
+  $('fName').value=''; $('fCal').value=''; $('fServ').value='';
+  buildDatalist(); renderLib();
+}
+function delFood(n){
+  custom=custom.filter(f=>f.name!==n);
+  lsSet(LS_F,JSON.stringify(custom));
+  buildDatalist(); renderLib();
+}
+function useFood(n){
+  $('eItem').value=n; document.querySelector('.tab[data-p="p2"]').click();
+  lookupFood(); window.scrollTo(0,0);
+}
+function renderLib(){
+  const q=($('fSearch').value||'').toLowerCase(), cat=$('fFilter').value;
+  const list=allFoods().filter(f=>(!q||f.name.toLowerCase().includes(q))&&(!cat||f.cat===cat))
+                       .sort((a,b)=>a.cat.localeCompare(b.cat)||a.name.localeCompare(b.name));
+  $('libCount').textContent=`Showing ${list.length} of ${allFoods().length} items `+
+    `(${custom.length} custom added by you).`;
+  $('libRows').innerHTML=list.length?list.map(f=>
+    `<tr><td>${f.name}${f.builtin?'':' <span class="pill green">custom</span>'}</td>
+      <td><span class="cat">${f.cat}</span></td><td>${f.serv}</td>
+      <td style="text-align:right"><strong>${num(f.kcal)}</strong></td>
+      <td><button class="ghost" style="padding:4px 9px;font-size:11px" onclick="useFood('${f.name.replace(/'/g,"\\'")}')">Use</button>
+      ${f.builtin?'':` <button class="danger" style="padding:4px 9px;font-size:11px" onclick="delFood('${f.name.replace(/'/g,"\\'")}')">Del</button>`}</td></tr>`
+  ).join(''):'<tr><td colspan="5" class="empty">No matching food found.</td></tr>';
+}
+function delEntry(id){entries=entries.filter(e=>e.id!==id);lsSet(LS_E,JSON.stringify(entries));renderAll()}
+function resetAll(){if(confirm('Clear profile, all logged entries and your custom foods?')){
+  lsDel(LS_P);lsDel(LS_E);lsDel(LS_F);location.reload()}}
+
+function dayTotals(){
+  const m={}; entries.forEach(e=>m[e.date]=(m[e.date]||0)+e.cal);
+  return Object.keys(m).sort().map(d=>({date:d,total:m[d],n:entries.filter(e=>e.date===d).length}));
+}
+function monday(d){const x=new Date(d+'T00:00:00');const k=(x.getDay()+6)%7;x.setDate(x.getDate()-k);return x}
+function fmt(x){return x.toISOString().slice(0,10)}
+function fmtNice(s){const d=new Date(s+'T00:00:00');return d.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'})}
+function dayName(s){return new Date(s+'T00:00:00').toLocaleDateString('en-GB',{weekday:'short'})}
+function barHtml(avg,lim){const p=Math.min(100,Math.round(avg/lim*100));
+  return `<div class="bar"><span class="${avg>lim?'red':''}" style="width:${p}%"></span></div>`}
+function statusPill(v,lim){return v>lim?'<span class="pill red">Exceeded</span>':'<span class="pill green">Within</span>'}
+
+function renderAll(){
+  if(profile){
+    $('hdrSub').textContent=(profile.name?profile.name+' — ':'')+'Daily limit '+num(profile.limit)+' kcal';
+    $('oBmi').textContent=profile.bmi.toFixed(1); $('oBmiCat').textContent=bmiCat(profile.bmi);
+    $('oBmr').textContent=num(profile.bmr); $('oTdee').textContent=num(profile.tdee);
+    $('oLimit').textContent=num(profile.limit); $('limShow').textContent=num(profile.limit)+' kcal';
+    $('oLim2').textContent=num(profile.limit);
+  }
+  renderDay(); renderAllDays(); renderWeek(); renderMonth();
+}
+
+function renderDay(){
+  const d=$('eDate').value, lim=limit(), rows=entries.filter(e=>e.date===d).sort((a,b)=>a.id-b.id);
+  const tot=rows.reduce((s,e)=>s+e.cal,0);
+  $('dayRows').innerHTML=rows.length?rows.map(e=>
+    `<tr><td>${e.meal}</td><td>${e.item}</td>
+     <td style="font-size:12px;color:var(--muted)">${e.portion?portionLabel(e.portion)+(e.serv||'serving'):'—'}</td>
+     <td style="text-align:right">${num(e.cal)}</td>
+     <td><button class="danger" style="padding:3px 9px;font-size:11px" onclick="delEntry(${e.id})">Del</button></td></tr>`).join('')
+    +`<tr style="font-weight:700;${tot>lim&&lim?'background:var(--red-bg);color:var(--red)':''}">
+      <td colspan="3">TOTAL</td><td style="text-align:right">${num(tot)}</td><td></td></tr>`
+    :'<tr><td colspan="5" class="empty">No entries for this date.</td></tr>';
+  $('oCons').textContent=num(tot);
+  if(lim){
+    const rem=lim-tot, pct=Math.round(tot/lim*100);
+    $('oRem').textContent=num(rem); $('oPct').textContent=pct+'%';
+    $('sConsumed').className='stat '+(tot>lim?'over':'under');
+    $('sRemain').className='stat '+(rem<0?'over':'under');
+    $('dayBanner').innerHTML=!rows.length?'':(tot>lim
+      ?`<div class="banner warn">⚠ Daily limit exceeded by ${num(tot-lim)} kcal on ${fmtNice(d)}.</div>`
+      :`<div class="banner ok">✓ Within limit — ${num(rem)} kcal remaining on ${fmtNice(d)}.</div>`);
+  }
+}
+
+function renderAllDays(){
+  const lim=limit(), days=dayTotals().reverse();
+  $('allRows').innerHTML=days.length?days.map(d=>{
+    const over=lim&&d.total>lim, v=lim?d.total-lim:0;
+    return `<tr class="${over?'over-row':''}"><td>${fmtNice(d.date)}</td><td>${dayName(d.date)}</td><td>${d.n}</td>
+      <td style="text-align:right">${num(d.total)}</td><td style="text-align:right">${lim?num(lim):'—'}</td>
+      <td style="text-align:right">${lim?(v>0?'+':'')+num(v):'—'}</td><td>${lim?statusPill(d.total,lim):'—'}</td></tr>`;
+  }).join(''):'<tr><td colspan="7" class="empty">No data logged yet.</td></tr>';
+}
+
+function renderWeek(){
+  const lim=limit(), days=dayTotals(), g={};
+  days.forEach(d=>{const k=fmt(monday(d.date));(g[k]=g[k]||[]).push(d)});
+  const keys=Object.keys(g).sort().reverse();
+  $('wkRows').innerHTML=keys.length?keys.map((k,i)=>{
+    const arr=g[k], tot=arr.reduce((s,d)=>s+d.total,0), avg=tot/arr.length;
+    const end=new Date(k+'T00:00:00'); end.setDate(end.getDate()+6);
+    const over=arr.filter(d=>lim&&d.total>lim).length;
+    return `<tr class="${lim&&avg>lim?'over-row':''}"><td>W${keys.length-i}</td>
+      <td>${fmtNice(k)} – ${fmtNice(fmt(end))}</td><td>${arr.length}</td>
+      <td style="text-align:right">${num(tot)}</td><td style="text-align:right"><strong>${num(avg)}</strong></td>
+      <td style="text-align:right">${lim?num(lim):'—'}</td><td>${over} / ${arr.length}</td>
+      <td>${lim?barHtml(avg,lim):'—'}</td><td>${lim?statusPill(avg,lim):'—'}</td></tr>`;
+  }).join(''):'<tr><td colspan="9" class="empty">No data logged yet.</td></tr>';
+
+  const cur=keys[0];
+  if(cur&&lim){
+    const arr=g[cur], avg=arr.reduce((s,d)=>s+d.total,0)/arr.length;
+    const allAvg=days.reduce((s,d)=>s+d.total,0)/days.length;
+    const over=arr.filter(d=>d.total>lim).length;
+    $('wkStats').innerHTML=`
+      <div class="stat ${avg>lim?'over':'under'}"><div class="k">Latest Week Average</div><div class="v">${num(avg)}</div><div class="s">kcal/day</div></div>
+      <div class="stat"><div class="k">Days Logged</div><div class="v">${arr.length}</div><div class="s">this week</div></div>
+      <div class="stat ${over?'over':'under'}"><div class="k">Days Over Limit</div><div class="v">${over}</div><div class="s">of ${arr.length} days</div></div>
+      <div class="stat ${allAvg>lim?'over':'under'}"><div class="k">Overall Average</div><div class="v">${num(allAvg)}</div><div class="s">all logged days</div></div>`;
+  } else $('wkStats').innerHTML='';
+
+  drawDailyChart(keys.length?g[keys[0]]:[], keys[0], lim);
+  drawWeeklyChart(keys.slice().reverse().map((k,i)=>{
+    const arr=g[k];
+    return {key:k, label:'W'+(i+1), avg:arr.reduce((s,d)=>s+d.total,0)/arr.length};
+  }), lim);
+}
+
+/* ================= CHARTS (inline SVG, no libraries) ================= */
+const C={navy:'#10244A', gold:'#C9A227', red:'#C0392B'};
+function niceMax(v){const s=Math.pow(10,Math.floor(Math.log10(v||1)));return Math.ceil(v/(s/2))*(s/2)}
+function emptySvg(msg){return `<svg viewBox="0 0 640 240"><text x="320" y="120" text-anchor="middle"
+  class="cg-lbl" style="font-size:13px">${msg}</text></svg>`}
+
+function drawDailyChart(arr,weekStart,lim){
+  const el=$('chartDaily');
+  if(!arr||!arr.length||!lim){el.innerHTML=emptySvg('Log entries and set your profile to view the weekly trend.');return}
+  const map={}; arr.forEach(d=>map[d.date]=d.total);
+  const days=[...Array(7)].map((_,i)=>{
+    const dt=new Date(weekStart+'T00:00:00'); dt.setDate(dt.getDate()+i);
+    const k=fmt(dt);
+    return {k, lbl:dt.toLocaleDateString('en-GB',{weekday:'short'}), val:map[k]||0, logged:k in map};
+  });
+  const W=640,H=270,L=52,R=16,T=22,B=42, pw=W-L-R, ph=H-T-B;
+  const max=niceMax(Math.max(lim,...days.map(d=>d.val))*1.15);
+  const y=v=>T+ph-(v/max)*ph;
+  const bw=pw/7*0.56, step=pw/7;
+  let s=`<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet">`;
+  for(let i=0;i<=4;i++){const v=max/4*i;
+    s+=`<line class="cg-grid" x1="${L}" y1="${y(v)}" x2="${W-R}" y2="${y(v)}"/>
+        <text class="cg-lbl" x="${L-8}" y="${y(v)+3}" text-anchor="end">${Math.round(v)}</text>`}
+  days.forEach((d,i)=>{
+    const x=L+step*i+(step-bw)/2, over=d.val>lim, h=Math.max(0,T+ph-y(d.val));
+    if(d.logged) s+=`<rect x="${x}" y="${y(d.val)}" width="${bw}" height="${h}" rx="3"
+      fill="${over?C.red:C.navy}" opacity=".92"><title>${d.lbl}: ${Math.round(d.val)} kcal</title></rect>
+      <text class="cg-val" x="${x+bw/2}" y="${y(d.val)-6}" text-anchor="middle"
+        fill="${over?C.red:C.navy}">${Math.round(d.val)}</text>`;
+    else s+=`<rect x="${x}" y="${T+ph-4}" width="${bw}" height="4" rx="2" fill="#E3E6EB"/>`;
+    s+=`<text class="cg-lbl" x="${x+bw/2}" y="${T+ph+17}" text-anchor="middle">${d.lbl}</text>`;
+  });
+  s+=`<line class="cg-lim" x1="${L}" y1="${y(lim)}" x2="${W-R}" y2="${y(lim)}"/>
+      <text class="cg-lbl" x="${W-R}" y="${y(lim)-6}" text-anchor="end" fill="${C.red}"
+        style="font-weight:700">Limit ${Math.round(lim)}</text>
+      <line class="cg-axis" x1="${L}" y1="${T+ph}" x2="${W-R}" y2="${T+ph}"/>
+      <text class="cg-lbl" x="${L}" y="${H-8}">Week of ${fmtNice(weekStart)} — grey marks = no entry logged</text></svg>`;
+  el.innerHTML=s;
+}
+
+function drawWeeklyChart(weeks,lim){
+  const el=$('chartWeekly');
+  if(!weeks||!weeks.length||!lim){el.innerHTML=emptySvg('No weekly data yet.');return}
+  const W=640,H=270,L=52,R=16,T=22,B=46, pw=W-L-R, ph=H-T-B;
+  const max=niceMax(Math.max(lim,...weeks.map(w=>w.avg))*1.15);
+  const y=v=>T+ph-(v/max)*ph;
+  const n=weeks.length, step=pw/n, x=i=>L+step*i+step/2;
+  let s=`<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet">`;
+  for(let i=0;i<=4;i++){const v=max/4*i;
+    s+=`<line class="cg-grid" x1="${L}" y1="${y(v)}" x2="${W-R}" y2="${y(v)}"/>
+        <text class="cg-lbl" x="${L-8}" y="${y(v)+3}" text-anchor="end">${Math.round(v)}</text>`}
+  const bw=Math.min(46,step*0.5);
+  weeks.forEach((w,i)=>{
+    const over=w.avg>lim, h=Math.max(0,T+ph-y(w.avg));
+    s+=`<rect x="${x(i)-bw/2}" y="${y(w.avg)}" width="${bw}" height="${h}" rx="3"
+      fill="${over?C.red:C.navy}" opacity=".85"><title>${w.label}: ${Math.round(w.avg)} kcal/day</title></rect>
+      <text class="cg-lbl" x="${x(i)}" y="${T+ph+17}" text-anchor="middle">${w.label}</text>
+      <text class="cg-lbl" x="${x(i)}" y="${T+ph+30}" text-anchor="middle" style="font-size:9px">${fmtNice(w.key).slice(0,6)}</text>`;
+  });
+  if(n>1){
+    const pts=weeks.map((w,i)=>`${x(i)},${y(w.avg)}`).join(' ');
+    s+=`<polyline class="cg-area" points="${L},${T+ph} ${pts} ${W-R},${T+ph}" stroke="none"/>
+        <polyline points="${pts}" fill="none" stroke="${C.gold}" stroke-width="2.5"
+          stroke-linejoin="round" stroke-linecap="round"/>`;
+  }
+  weeks.forEach((w,i)=>{
+    s+=`<circle cx="${x(i)}" cy="${y(w.avg)}" r="4.5" fill="#fff" stroke="${C.gold}" stroke-width="2.5"/>
+        <text class="cg-val" x="${x(i)}" y="${y(w.avg)-12}" text-anchor="middle"
+          fill="${w.avg>lim?C.red:C.navy}">${Math.round(w.avg)}</text>`;
+  });
+  s+=`<line class="cg-lim" x1="${L}" y1="${y(lim)}" x2="${W-R}" y2="${y(lim)}"/>
+      <text class="cg-lbl" x="${W-R}" y="${y(lim)-6}" text-anchor="end" fill="${C.red}"
+        style="font-weight:700">Limit ${Math.round(lim)}</text>
+      <line class="cg-axis" x1="${L}" y1="${T+ph}" x2="${W-R}" y2="${T+ph}"/></svg>`;
+  el.innerHTML=s;
+}
+
+function renderMonth(){
+  const lim=limit(), days=dayTotals(), g={};
+  days.forEach(d=>{const k=d.date.slice(0,7);(g[k]=g[k]||[]).push(d)});
+  const keys=Object.keys(g).sort().reverse();
+  const nice=k=>new Date(k+'-01T00:00:00').toLocaleDateString('en-GB',{month:'long',year:'numeric'});
+  $('moRows').innerHTML=keys.length?keys.map(k=>{
+    const arr=g[k], tot=arr.reduce((s,d)=>s+d.total,0), avg=tot/arr.length;
+    const over=arr.filter(d=>lim&&d.total>lim).length;
+    const comp=lim?Math.round((arr.length-over)/arr.length*100):0;
+    return `<tr class="${lim&&avg>lim?'over-row':''}"><td>${nice(k)}</td><td>${arr.length}</td>
+      <td style="text-align:right">${num(tot)}</td><td style="text-align:right"><strong>${num(avg)}</strong></td>
+      <td style="text-align:right">${lim?num(lim):'—'}</td><td>${over}</td><td>${lim?comp+'%':'—'}</td>
+      <td>${lim?barHtml(avg,lim):'—'}</td><td>${lim?statusPill(avg,lim):'—'}</td></tr>`;
+  }).join(''):'<tr><td colspan="9" class="empty">No data logged yet.</td></tr>';
+
+  const cur=keys[0];
+  if(cur&&lim){
+    const arr=g[cur], tot=arr.reduce((s,d)=>s+d.total,0), avg=tot/arr.length;
+    const over=arr.filter(d=>d.total>lim).length;
+    const hi=Math.max(...arr.map(d=>d.total));
+    $('moStats').innerHTML=`
+      <div class="stat ${avg>lim?'over':'under'}"><div class="k">Current Month Average</div><div class="v">${num(avg)}</div><div class="s">kcal/day</div></div>
+      <div class="stat"><div class="k">Total Intake</div><div class="v">${num(tot)}</div><div class="s">kcal over ${arr.length} days</div></div>
+      <div class="stat ${over?'over':'under'}"><div class="k">Days Over Limit</div><div class="v">${over}</div><div class="s">of ${arr.length} days</div></div>
+      <div class="stat ${hi>lim?'over':'under'}"><div class="k">Highest Day</div><div class="v">${num(hi)}</div><div class="s">kcal</div></div>`;
+  } else $('moStats').innerHTML='';
+}
+
+function exportCSV(){
+  const lim=limit();
+  let csv='Date,Meal,Food Item,Portion,Serving Basis,Calories\n';
+  entries.sort((a,b)=>a.date.localeCompare(b.date)).forEach(e=>
+    csv+=`${e.date},${e.meal},"${e.item}",${e.portion||1},"${e.serv||'-'}",${e.cal}\n`);
+  csv+='\nDate,Daily Total,Limit,Status\n';
+  dayTotals().forEach(d=>csv+=`${d.date},${d.total},${lim},${d.total>lim?'Exceeded':'Within'}\n`);
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
+  a.download='calorie_log.csv'; a.click();
+}
+
+// Wrap every table in a horizontal-scroll container for small screens
+document.querySelectorAll('.card > table').forEach(t=>{
+  const w=document.createElement('div'); w.className='tscroll';
+  t.parentNode.insertBefore(w,t); w.appendChild(t);
+});
+// Redraw charts on orientation change / resize
+let rt; window.addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(renderWeek,200)});
+
+$('eDate').value=new Date().toISOString().slice(0,10);
+$('eDate').onchange=renderDay;
+$('eItem').addEventListener('input',()=>{lookupFood();showSuggest()});
+$('eItem').addEventListener('focus',showSuggest);
+$('eItem').addEventListener('change',lookupFood);
+$('eItem').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();hideSuggest();$('eItem').blur()}});
+$('ePortion').addEventListener('change',lookupFood);
+
+if(!LS_OK){
+  const w=document.createElement('div'); w.className='banner warn';
+  w.style.margin='0 0 14px'; w.textContent='⚠ Private Browsing detected — your data will not be saved when you close this tab. Open this file in a normal Safari tab to keep your history.';
+  document.querySelector('.wrap').prepend(w);
+}
+buildDatalist(); renderLib();
+loadProfile(); renderAll();
+</script>
+
+
+</body></html>
